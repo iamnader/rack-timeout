@@ -15,7 +15,7 @@ module Rack
     def call(env)
       begin
         SystemTimer.timeout(self.class.timeout, ::Timeout::Error) { @app.call(env) }
-      rescue Timeout::Error => e
+      rescue ::Timeout::Error => e
         # clean up the mongo connection and reraise
         puts "*** Timeout, cleaning up the mongo connection"
         Mongoid.try(:master).try(:connection).try(:reconnect)
